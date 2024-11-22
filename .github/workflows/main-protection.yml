@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install Root Dependencies
         run: |
@@ -40,7 +40,6 @@ jobs:
           path: backend/node_modules
           key: ${{ runner.os }}-backend-${{ hashFiles('backend/package-lock.json') }}
 
-
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
@@ -49,9 +48,46 @@ jobs:
         working-directory: ./backend
         run: npm install
 
+      - name: Check Root Directory Formatting
+        run: |
+          echo "Checking root directory formatting..."
+          npx prettier --check "*.{js,jsx,ts,tsx,json,md}" || (
+            echo "Formatting root directory files..."
+            npx prettier --write "*.{js,jsx,ts,tsx,json,md}"
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add .
+            git commit -m "style: format root directory files"
+            git push
+          )
 
-      - name: Check code formatting
-        run: npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+      - name: Check Frontend Formatting
+        working-directory: ./frontend
+        run: |
+          echo "Checking frontend formatting..."
+          npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,md}" || (
+            echo "Formatting frontend files..."
+            npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,md}"
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add .
+            git commit -m "style: format frontend files"
+            git push
+          )
+
+      - name: Check Backend Formatting
+        working-directory: ./backend
+        run: |
+          echo "Checking backend formatting..."
+          npx prettier --check "src/**/*.{js,ts,json,md}" || (
+            echo "Formatting backend files..."
+            npx prettier --write "src/**/*.{js,ts,json,md}"
+            git config --global user.email "github-actions@github.com"
+            git config --global user.name "GitHub Actions"
+            git add .
+            git commit -m "style: format backend files"
+            git push
+          )
 
       - name: Run Frontend ESLint
         working-directory: ./frontend
@@ -61,7 +97,6 @@ jobs:
         working-directory: ./backend
         run: npm run lint
 
-
       - name: Run Frontend Tests
         working-directory: ./frontend
         run: npm test -- --watchAll=false --passWithNoTests
@@ -69,7 +104,6 @@ jobs:
       - name: Run Backend Tests
         working-directory: ./backend
         run: npm test --passWithNoTests
-
 
       - name: Check Frontend Security
         working-directory: ./frontend
@@ -91,8 +125,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
-          cache: 'npm'
-
+          cache: "npm"
 
       - name: Cache Frontend Build
         uses: actions/cache@v3
@@ -106,13 +139,11 @@ jobs:
           path: backend/dist
           key: ${{ runner.os }}-backend-build-${{ github.sha }}
 
-
       - name: Build frontend
         working-directory: ./frontend
         run: |
           npm ci
           npm run build
-
 
       - name: Build backend
         working-directory: ./backend
