@@ -19,6 +19,14 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install and configure Husky
+        run: |
+          npm install husky --save-dev
+          npx husky install
+
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm ci
@@ -67,14 +75,6 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install and configure Husky
-        run: |
-          npm install husky --save-dev
-          npx husky install
-          
       - name: Build frontend
         working-directory: ./frontend
         run: |
