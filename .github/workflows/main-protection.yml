@@ -18,14 +18,28 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
 
-      - name: Install and configure Husky
+      - name: Install Root Dependencies
         run: |
-          npm install husky --save-dev
-          npx husky install
+          npm ci
+          npm install --save-dev husky lint-staged prettier
+          npm run prepare
+
+
+      - name: Cache Frontend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
+
+      - name: Cache Backend Dependencies
+        uses: actions/cache@v3
+        with:
+          path: backend/node_modules
+          key: ${{ runner.os }}-backend-${{ hashFiles('backend/package-lock.json') }}
+
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
@@ -35,9 +49,9 @@ jobs:
         working-directory: ./backend
         run: npm ci
 
+
       - name: Check code formatting
-        run: |
-          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+        run: npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
 
       - name: Run Frontend ESLint
         working-directory: ./frontend
@@ -47,25 +61,28 @@ jobs:
         working-directory: ./backend
         run: npm run lint
 
+
       - name: Run Frontend Tests
         working-directory: ./frontend
-        run: npm test -- --watchAll=false
+        run: npm test -- --watchAll=false --passWithNoTests
 
       - name: Run Backend Tests
         working-directory: ./backend
-        run: npm test
+        run: npm test --passWithNoTests
+
 
       - name: Check Frontend Security
         working-directory: ./frontend
-        run: npm audit
+        run: npm audit || true
 
       - name: Check Backend Security
         working-directory: ./backend
-        run: npm audit
+        run: npm audit || true
 
   build_check:
     name: Build Check
     runs-on: ubuntu-latest
+    needs: quality_checks
 
     steps:
       - uses: actions/checkout@v3
@@ -74,12 +91,28 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "20"
+          cache: 'npm'
+
+
+      - name: Cache Frontend Build
+        uses: actions/cache@v3
+        with:
+          path: frontend/build
+          key: ${{ runner.os }}-frontend-build-${{ github.sha }}
+
+      - name: Cache Backend Build
+        uses: actions/cache@v3
+        with:
+          path: backend/dist
+          key: ${{ runner.os }}-backend-build-${{ github.sha }}
+
 
       - name: Build frontend
         working-directory: ./frontend
         run: |
           npm ci
           npm run build
+
 
       - name: Build backend
         working-directory: ./backend

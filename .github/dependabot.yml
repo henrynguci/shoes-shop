@@ -1,6 +1,6 @@
 version: 2
 updates:
-  # Frontend dependencies
+
   - package-ecosystem: "npm"
     directory: "/frontend"
     schedule:
@@ -10,7 +10,7 @@ updates:
       - "frontend"
       - "dependencies"
 
-  # Backend dependencies
+
   - package-ecosystem: "npm"
     directory: "/backend"
     schedule:
@@ -20,7 +20,7 @@ updates:
       - "backend"
       - "dependencies"
 
-  # GitHub Actions
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
