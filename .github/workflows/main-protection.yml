@@ -29,13 +29,13 @@ jobs:
           npx husky install
 
       - name: Cache Frontend Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: frontend/node_modules
           key: ${{ runner.os }}-frontend-${{ hashFiles('frontend/package-lock.json') }}
 
       - name: Cache Backend Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: backend/node_modules
           key: ${{ runner.os }}-backend-${{ hashFiles('backend/package-lock.json') }}
@@ -128,13 +128,13 @@ jobs:
           cache: "npm"
 
       - name: Cache Frontend Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: frontend/build
           key: ${{ runner.os }}-frontend-build-${{ github.sha }}
 
       - name: Cache Backend Build
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: backend/dist
           key: ${{ runner.os }}-backend-build-${{ github.sha }}
