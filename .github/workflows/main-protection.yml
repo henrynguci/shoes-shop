@@ -48,46 +48,24 @@ jobs:
         working-directory: ./backend
         run: npm install
 
-      - name: Check Root Directory Formatting
+      - name: Check and Format Code
         run: |
-          echo "Checking root directory formatting..."
-          npx prettier --check "*.{js,jsx,ts,tsx,json,md}" || (
-            echo "Formatting root directory files..."
-            npx prettier --write "*.{js,jsx,ts,tsx,json,md}"
-            git config --global user.email "github-actions@github.com"
-            git config --global user.name "GitHub Actions"
-            git add .
-            git commit -m "style: format root directory files"
-            git push
-          )
+          echo "Formatting code..."
+          npx prettier --write "**/*.{js,jsx,ts,tsx,json,md}"
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
 
-      - name: Check Frontend Formatting
-        working-directory: ./frontend
-        run: |
-          echo "Checking frontend formatting..."
-          npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,md}" || (
-            echo "Formatting frontend files..."
-            npx prettier --write "src/**/*.{js,jsx,ts,tsx,json,md}"
-            git config --global user.email "github-actions@github.com"
-            git config --global user.name "GitHub Actions"
+          if [[ -n "$(git status --porcelain)" ]]; then
             git add .
-            git commit -m "style: format frontend files"
+            git commit -m "style: format code with prettier"
             git push
-          )
+          else
+            echo "No formatting changes needed"
+          fi
 
-      - name: Check Backend Formatting
-        working-directory: ./backend
-        run: |
-          echo "Checking backend formatting..."
-          npx prettier --check "src/**/*.{js,ts,json,md}" || (
-            echo "Formatting backend files..."
-            npx prettier --write "src/**/*.{js,ts,json,md}"
-            git config --global user.email "github-actions@github.com"
-            git config --global user.name "GitHub Actions"
-            git add .
-            git commit -m "style: format backend files"
-            git push
-          )
+          echo "Verifying formatting..."
+          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+
 
       - name: Run Frontend ESLint
         working-directory: ./frontend
