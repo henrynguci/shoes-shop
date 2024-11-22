@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Package files
+package.json
+
+# Documentation
+README.md
+*.md
+
+# Build outputs
+build
+dist
+coverage
+.next
+.git
