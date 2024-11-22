@@ -2,9 +2,9 @@ name: main-bot
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   quality_checks:
@@ -12,61 +12,69 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
-    - name: Install dependencies
-      run: |
-        npm ci
-        cd frontend && npm ci
-        cd ../backend && npm ci
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm ci
 
-    - name: Check code formatting
-      run: |
-        npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
 
-    - name: Run ESLint
-      run: |
-        cd frontend && npm run lint
-        cd ../backend && npm run lint
+      - name: Check code formatting
+        run: |
+          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
 
-    - name: Run tests
-      run: |
-        cd frontend && npm test -- --watchAll=false
-        cd ../backend && npm test
+      - name: Run Frontend ESLint
+        working-directory: ./frontend
+        run: npm run lint
 
-    - name: Check for security vulnerabilities
-      run: |
-        npm audit
-        cd frontend && npm audit
-        cd ../backend && npm audit
+      - name: Run Backend ESLint
+        working-directory: ./backend
+        run: npm run lint
+
+      - name: Run Frontend Tests
+        working-directory: ./frontend
+        run: npm test -- --watchAll=false
+
+      - name: Run Backend Tests
+        working-directory: ./backend
+        run: npm test
+
+      - name: Check Frontend Security
+        working-directory: ./frontend
+        run: npm audit
+
+      - name: Check Backend Security
+        working-directory: ./backend
+        run: npm audit
 
   build_check:
     name: Build Check
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18'
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
 
-    - name: Build frontend
-      run: |
-        cd frontend
-        npm ci
-        npm run build
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm ci
+          npm run build
 
-    - name: Build backend
-      run: |
-        cd backend
-        npm ci
-        npm run build
+      - name: Build backend
+        working-directory: ./backend
+        run: |
+          npm ci
+          npm run build
