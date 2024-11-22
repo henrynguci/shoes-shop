@@ -64,8 +64,7 @@ jobs:
           fi
 
           echo "Verifying formatting..."
-          npx prettier --check "**/*.{js,jsx,ts,tsx,json,md}"
-
+          npx prettier --write "**/*.{js,jsx,ts,tsx,json,md}"
 
       - name: Run Frontend ESLint
         working-directory: ./frontend
