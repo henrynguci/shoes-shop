@@ -1,18 +1,16 @@
-import { useState } from 'react'
+import React from 'react';
+import { AuthProvider } from './contexts/AuthContext';
+import { MainLayout } from './layouts/MainLayout';
+import { Home } from './pages/Home';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-    </>
-  )
+    <AuthProvider>
+      <MainLayout>
+        <Home />
+      </MainLayout>
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;

@@ -50,6 +50,7 @@ const frontendConfig = [
       'react/prop-types': 'off',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+      'no-unused-vars': 'off',
     },
   },
 ];
@@ -72,6 +73,8 @@ const backendConfig = [
     rules: {
       ...js.configs.recommended.rules,
       ...typescriptPlugin.configs.recommended.rules,
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
     },
   },
 ];

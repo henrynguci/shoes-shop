@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+
+# Database
+*.sqlite3
+*.db
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+coverage/
+.coverage
+htmlcov/
+
+# Cache
+.pytest_cache/
+.mypy_cache/
+.cache
+
+# Media files
+uploads/
+media/
+
+# Local development
+*.local

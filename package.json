@@ -11,7 +11,7 @@
 		"lint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
 		"lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
 		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-		"prepare": "husky install",
+		"prepare": "node -e \"try { require('husky').install() } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }\"",
 		"pre-commit": "lint-staged"
 	},
 	"devDependencies": {
