@@ -48,23 +48,13 @@ jobs:
         working-directory: ./backend
         run: npm install
 
-      - name: Check and Format Code
+      - name: Check code formatting
         run: |
-          echo "Formatting code..."
-          npx prettier --write "**/*.{js,jsx,ts,tsx,json,md}"
-          git config --global user.email "github-actions@github.com"
-          git config --global user.name "GitHub Actions"
-
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git add .
-            git commit -m "style: format code with prettier"
-            git push
-          else
-            echo "No formatting changes needed"
-          fi
-
-          echo "Verifying formatting..."
-          npx prettier --write "**/*.{js,jsx,ts,tsx,json,md}"
+          echo "Checking source code formatting..."
+          npx prettier --check "{frontend,backend}/src/**/*.{js,jsx,ts,tsx}" || (
+            echo "Formatting code..."
+            npx prettier --write "{frontend,backend}/src/**/*.{js,jsx,ts,tsx}"
+          )
 
       - name: Run Frontend ESLint
         working-directory: ./frontend
