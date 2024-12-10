@@ -1,0 +1,55 @@
+.app,
+.content {
+  height: 100%;
+  width: 100%;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.app {
+  display: flex;
+  position: relative;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.signin-panel {
+  background-image: url("https://wallpapercave.com/wp/wp2508257.jpg");
+  background-size: cover;
+  height: 100%;
+  position: relative;
+}
+.signin-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit; /* Sử dụng lại ảnh nền */
+  filter: blur(4px); /* Điều chỉnh độ mờ tại đây */
+  z-index: 1;
+}
+.signin-panel div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}

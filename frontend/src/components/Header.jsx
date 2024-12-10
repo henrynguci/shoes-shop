@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Wrapper from "./Wrapper";
-
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link } from "react-router-dom";
 import Menu from "./Menu";
 import logo from '../public/logo.svg'
@@ -13,6 +14,7 @@ const Header = () => {
     const [show, setShow] = useState("translate-y-0");
     const [lastScrollY, setLastScrollY] = useState(0);
     const [categories, setCategories] = useState(null);
+    const [isLogin, setIsLogin] = useState(false);
 
     const { cartItems } = useSelector((state) => state.cart);
 
@@ -73,6 +75,13 @@ const Header = () => {
                         </div>
                     </Link>
                     {/* Icon end */}
+                    {isLogin ? (
+                        <AccountCircleIcon />
+                    ) : (
+                        <Link to={'/login'}>
+                        <LoginIcon />
+                        </Link>
+                    )}
                 </div>
             </Wrapper>
         </header>
