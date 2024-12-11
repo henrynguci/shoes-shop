@@ -45,3 +45,12 @@ export const updateProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const deleteProduct = async (req, res) => {
+  try {
+    await productService.deleteProduct(req.params.id);
+    res.status(200).json({ message: 'Delete product successfully!' });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
