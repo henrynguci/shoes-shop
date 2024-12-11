@@ -1,14 +1,14 @@
-import pool from '../utils/database.js';
 import sql from 'mssql';
 
 export const getAllProducts = async () => {
-  const result = await pool.request().execute('getAllProducts');
+  const request = new sql.Request();
+  const result = await request.execute('getAllProducts');
   return result.recordset;
 };
 
 export const getProductDetail = async (Product_ID) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Product_ID', sql.Int, Product_ID)
     .execute('getProductDetail');
   return result.recordsets;
@@ -18,8 +18,8 @@ export const insertProduct = async (
   { Name, Description, Brand_ID, Gift_ID, Img_url },
   { Color, Size, Price }
 ) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Name', sql.NVarChar(200), Name)
     .input('Description', sql.NVarChar(1000), Description)
     .input('Brand_ID', sql.Int, Number(Brand_ID))
@@ -36,8 +36,8 @@ export const updateProduct = async (
   Product_ID,
   { Name, Description, Brand_ID, Gift_ID }
 ) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Product_ID', sql.Int, Number(Product_ID))
     .input('Name', sql.VarChar(100), Name)
     .input('Description', sql.NVarChar(500), Description)
@@ -48,8 +48,8 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (Product_ID) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Product_ID', sql.Int, Number(Product_ID))
     .execute('deleteProduct');
   return result;

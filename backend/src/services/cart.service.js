@@ -1,9 +1,8 @@
-import pool from '../utils/database.js';
 import sql from 'mssql';
 
 export const getCart = async (Account_ID) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Account_ID', sql.Int, Account_ID)
     .execute('getCart');
   console.log(result);
@@ -17,8 +16,8 @@ export const addVersionToCart = async ({
   Size,
   Amount,
 }) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Customer_ID', sql.Int, Account_ID)
     .input('Product_ID', sql.Int, Product_ID)
     .input('Color', sql.VarChar(50), Color)
@@ -34,8 +33,8 @@ export const removeVersionInCart = async ({
   Color,
   Size,
 }) => {
-  const result = await pool
-    .request()
+  const request = new sql.Request();
+  const result = await request
     .input('Customer_ID', sql.Int, Account_ID)
     .input('Product_ID', sql.Int, Product_ID)
     .input('Color', sql.VarChar(50), Color)

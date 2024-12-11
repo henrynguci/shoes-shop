@@ -10,6 +10,3 @@ export const connectDB = async () => {
     process.exit(1);
   }
 };
-
-const pool = await sql.connect(dbConfig);
-export default pool;
