@@ -11,7 +11,7 @@ export const getProductDetail = async (Product_ID) => {
     .request()
     .input('Product_ID', sql.Int, Product_ID)
     .execute('getProductDetail');
-  return result;
+  return result.recordsets;
 };
 
 export const insertProduct = async (

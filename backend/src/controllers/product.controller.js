@@ -14,13 +14,13 @@ export const getAllProducts = async (req, res) => {
 
 export const getProductDetail = async (req, res) => {
   try {
-    const query = await productService.getProductDetail(req.params.id);
+    const result = await productService.getProductDetail(req.params.id);
     res.status(200).json({
       message: 'Get infomation of product',
       data: {
-        product: query.recordsets[0],
-        version: query.recordsets[1],
-        img: query.recordsets[2],
+        product: result[0],
+        version: result[1],
+        img: result[2],
       },
     });
   } catch (error) {
