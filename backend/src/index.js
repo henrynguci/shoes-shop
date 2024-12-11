@@ -6,6 +6,7 @@ import productRoutes from './routes/product.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import voucherRoutes from './routes/voucher.routes.js';
+import orderRoutes from './routes/order.routes.js';
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use('/api', productRoutes);
 app.use('/api', authRoutes);
 app.use('/api', cartRoutes);
 app.use('/api', voucherRoutes);
+app.use('/api', orderRoutes);
 
 // Connect to database
 await connectDB();
