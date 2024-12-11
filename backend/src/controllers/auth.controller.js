@@ -7,7 +7,10 @@ export const login = async (req, res) => {
     if (!account?.password) {
       res.status(404).json({ message: 'Username or password are incorrect!' });
     } else if (authService.comparePassword(password, account.password)) {
-      res.status(200).json({ message: 'Login successfully!', data: account });
+      res.status(200).json({
+        message: 'Login successfully!',
+        data: { Account_ID: account.Account_ID, role: account.Role },
+      });
     } else {
       res.status(404).json({ message: 'Username or password are incorrect!' });
     }
