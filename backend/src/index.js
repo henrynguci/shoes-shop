@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/api', productRoutes);
 
 // Connect to database
-connectDB();
+await connectDB();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
