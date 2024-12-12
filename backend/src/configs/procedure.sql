@@ -167,7 +167,11 @@ BEGIN
 	DELETE FROM Add_to_cart WHERE Customer_ID = @Customer_ID
 END;
 
-
+CREATE PROCEDURE getBrands
+AS
+BEGIN
+	SELECT * FROM Brand;
+END;
 
 
 
