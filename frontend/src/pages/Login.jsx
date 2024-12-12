@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import img from '../public/c392ba101244345.5f1a2d7ad1371.jpg'
+import { authService } from "../services/auth";
 
 export default function Login() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({username: 'username', password: 'password'});
   const navigate = useNavigate();
   const handleChange = (e) => {
     setFormData({
@@ -11,8 +12,10 @@ export default function Login() {
       [e.target.id]: e.target.value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const response = await authService.login(formData.username, formData.password)
+    console.log(response)
     navigate("/");
   };
 

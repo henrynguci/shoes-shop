@@ -1,15 +1,27 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Wrapper from "../components/Wrapper";
 import CartItem from "../components/CartItem";
 import { useSelector } from "react-redux";
 import emptyCart from '../public/empty-cart.jpg';
 import spinner from '../public/spinner.svg';
+import { cartService } from "../services/cart";
 
 const Cart = () => {
     const [loading, setLoading] = useState(false);
     const { cartItems } = useSelector((state) => state.cart);
-    
+
+    //test api
+    const [cart, setCart] = useState([]);
+    useEffect(()=> {
+        const getCart = async()=> {
+            const response = cartService.get('1')
+            console.log(response)
+            if (response.data) setCart(response.data)
+        }
+        getCart()
+    }, [])
+
     const subTotal = useMemo(() => {
         return cartItems.reduce(
             (total, val) => total + val.attributes.price,

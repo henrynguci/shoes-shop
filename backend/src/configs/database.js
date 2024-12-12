@@ -6,7 +6,7 @@ export const dbConfig = {
   server: DB_SERVER || 'localhost',
   database: DB_DATABASE || 'shoes_shop',
   options: {
-    encrypt: true,
+    encrypt: false,
     trustServerCertificate: true,
   },
 };
