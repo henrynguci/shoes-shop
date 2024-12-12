@@ -1,3 +1,5 @@
+import { ConnectionPool } from 'mssql';
+
 export const dbConfig = {
   user: 'your_username',
   password: 'your_password',
@@ -8,3 +10,5 @@ export const dbConfig = {
     trustServerCertificate: true
   }
 };
+
+console.log("hello world");

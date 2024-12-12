@@ -31,9 +31,10 @@ npm install
 1. Start backend server:
 cd backend
 npm start
-2. Start frontend development server:
-cd frontend
-npm start
+2. Start frontend development server: \
+cd frontend \
+npm i \
+npm run dev
 
 
 ## Features

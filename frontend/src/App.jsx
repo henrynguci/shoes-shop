@@ -1,15 +1,16 @@
 import React from 'react';
-import { AuthProvider } from './contexts/AuthContext';
-import { MainLayout } from './layouts/MainLayout';
-import { Home } from './pages/Home';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Shop from './pages/shop.jsx';
+import Admin from './Admin/Admin.jsx';
 
 function App() {
   return (
-    <AuthProvider>
-      <MainLayout>
-        <Home />
-      </MainLayout>
-    </AuthProvider>
+    <BrowserRouter>
+        <Routes>
+          <Route path={"/*"} element={<Shop />}></Route>
+          <Route path={"/admin/*"} element={<Admin />}></Route>
+        </Routes>
+    </BrowserRouter>
   );
 }
 
