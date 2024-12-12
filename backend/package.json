@@ -9,9 +9,11 @@
     "build": "npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint \"src/**/*.{js,ts}\"",
-    "lint:fix": "eslint \"src/**/*.{js,ts}\" --fix"
+    "lint:fix": "eslint \"src/**/*.{js,ts}\" --fix",
+    "seed": "node src/services/seeders/index.js"
   },
   "dependencies": {
+    "@faker-js/faker": "^9.3.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

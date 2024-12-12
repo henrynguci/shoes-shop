@@ -1,8 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import { PORT } from './configs/env.js';
-import { connectDB } from './utils/database.js';
+import dotenv from 'dotenv';
+import { connectDB } from './configs/db.js';
 import productRoutes from './routes/product.routes.js';
+
+// Load biến môi trường từ .env
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 

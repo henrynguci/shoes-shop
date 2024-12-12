@@ -1,5 +1,5 @@
 import sql from 'mssql';
-import { dbConfig } from '../configs/database.js';
+import { dbConfig } from '../configs/db.js';
 
 export const connectDB = async () => {
   try {
