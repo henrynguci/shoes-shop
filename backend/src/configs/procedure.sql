@@ -1,3 +1,24 @@
+CREATE FUNCTION CalculateTotalRevenue (@startDate DATE, @endDate DATE)
+RETURNS DECIMAL(15,2)
+AS
+BEGIN
+	IF @startDate > @endDate
+    BEGIN
+        RETURN NULL;
+    END;
+
+    DECLARE @totalRevenue DECIMAL(15,2) = 0;
+
+    -- Tính tổng doanh thu trong khoảng từ ngày bắt đầu đến ngày kết thúc
+    SELECT @totalRevenue = SUM(Amount)
+    FROM Payment
+    WHERE CAST(Time AS DATE) BETWEEN @startDate AND @endDate;
+
+    -- Trả về tổng doanh thu
+    RETURN @totalRevenue;
+END;
+
+
 -- lấy voucher khả dụng cho order
 CREATE FUNCTION getVoucherForOrder (@Customer_ID INT)
 RETURNS @Voucher TABLE (
@@ -6,10 +27,24 @@ RETURNS @Voucher TABLE (
 )
 AS
 BEGIN
-	DECLARE @Total_Price DECIMAL(15,2) = (
-		SELECT SUM(v.Price * c.Amount) FROM Add_to_cart c
+	DECLARE @Price DECIMAL, @Amount INT, @Total_Price DECIMAL(15,2) = 0
+
+	DECLARE cartCursor CURSOR FOR 
+		SELECT v.Price, c.Amount FROM Add_to_cart c
 			JOIN Version v ON v.Product_ID = c.Product_ID AND v.Color = c.Color AND v.Size = c.Size
-			WHERE c.Customer_ID = @Customer_ID)
+			WHERE c.Customer_ID = @Customer_ID;
+
+	OPEN cartCursor;
+
+	FETCH NEXT FROM cartCursor INTO @Price, @Amount;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN 
+		SET @Total_Price = @Total_Price + @Price * @Amount;
+	END;
+
+	CLOSE cartCursor;
+	DEALLOCATE cartCursor;
 
 	INSERT INTO @Voucher
 		SELECT v.Voucher_ID, prom.Discount_Percent FROM Voucher v
