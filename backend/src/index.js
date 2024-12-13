@@ -13,10 +13,6 @@ import brandRoutes from './routes/brand.routes.js';
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 
-// Load biến môi trường từ .env
-dotenv.config();
-const PORT = process.env.PORT || 3000;
-
 const app = express();
 
 app.use(cors());
