@@ -27,7 +27,7 @@ RETURNS @Voucher TABLE (
 )
 AS
 BEGIN
-	DECLARE @Price DECIMAL, @Amount INT, @Total_Price DECIMAL(15,2) = 0
+	DECLARE @Price DECIMAL(15,2), @Amount INT, @Total_Price DECIMAL(15,2) = 0
 
 	DECLARE cartCursor CURSOR FOR 
 		SELECT v.Price, c.Amount FROM Add_to_cart c
@@ -41,6 +41,7 @@ BEGIN
 	WHILE @@FETCH_STATUS = 0
 	BEGIN 
 		SET @Total_Price = @Total_Price + @Price * @Amount;
+		FETCH NEXT FROM cartCursor INTO @Price, @Amount;
 	END;
 
 	CLOSE cartCursor;
@@ -316,6 +317,7 @@ BEGIN
         atc.Customer_ID = @Account_ID
         AND atc.Color = v.Color
         AND atc.Size = v.Size
+		AND atc.Product_ID = v.Product_ID
         AND atc.Product_ID = p.Product_ID
         AND pi.Product_ID = p.Product_ID
     GROUP BY 

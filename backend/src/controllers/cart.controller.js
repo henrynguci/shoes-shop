@@ -24,7 +24,7 @@ export const addVersionToCart = async (req, res) => {
 export const removeVersionInCart = async (req, res) => {
   try {
     await cartService.removeVersionInCart(req.body);
-    res.status(200).json({ message: 'Add new version to cart successfully' });
+    res.status(200).json({ message: 'Remove version in cart successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
