@@ -1,6 +1,10 @@
-const API_URL = 'http://localhost:5000/api';
+import axios from 'axios';
 
-export const fetchProducts = async () => {
-  const response = await fetch(`${API_URL}/products`);
-  return response.json();
-};
+const axiosClient = axios.create({
+  baseURL: 'http://localhost:5000/api', // Replace this with your API base URL
+  headers: {
+    'Content-Type': 'application/json', // Adjust headers as needed
+  },
+});
+
+export default axiosClient;
