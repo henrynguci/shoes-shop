@@ -1,4 +1,3 @@
-
 import { faker } from '@faker-js/faker';
 
 class VoucherFactory {
@@ -17,7 +16,13 @@ class VoucherFactory {
                 usedVoucherIds.add(voucherId);
 
                 const promotionId = faker.helpers.arrayElement(promotionIds);
-                const status = faker.helpers.arrayElement(['Active', 'Used', 'Expired']);
+
+                // Tạo status với tỷ lệ: Active (70%), Used (20%), Expired (10%)
+                const status = faker.helpers.weightedArrayElement([
+                    { weight: 70, value: 'Active' },
+                    { weight: 20, value: 'Used' },
+                    { weight: 10, value: 'Expired' }
+                ]);
 
                 items.push({
                     Voucher_ID: voucherId,

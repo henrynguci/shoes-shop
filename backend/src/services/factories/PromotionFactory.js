@@ -1,4 +1,4 @@
-// src/services/factories/PromotionFactory.js
+
 import { faker } from '@faker-js/faker';
 
 export default class PromotionFactory {
@@ -31,21 +31,27 @@ export default class PromotionFactory {
         ];
 
         for (let i = 0; i < count; i++) {
-            // Tạo ngày bắt đầu từ hiện tại đến 7 ngày tới
+
             const timeStart = faker.date.between({
-                from: new Date(),
-                to: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                from: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                to: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
             });
 
-            // Thời gian kết thúc từ 3-30 ngày sau ngày bắt đầu
+
             const timeExpire = new Date(timeStart);
-            timeExpire.setDate(timeStart.getDate() + faker.number.int({ min: 3, max: 30 }));
+            const daysToAdd = faker.number.int({ min: 3, max: 30 });
+            timeExpire.setDate(timeStart.getDate() + daysToAdd);
+
+
+            if (timeExpire > new Date()) {
+                timeExpire.setTime(new Date().getTime() - 24 * 60 * 60 * 1000);
+            }
 
             items.push({
                 Name: faker.helpers.arrayElement(promotionTypes),
                 Description: faker.helpers.arrayElement(descriptions),
-                Discount_Percent: faker.number.int({ min: 10, max: 50 }), // Giảm giá từ 10-50%
-                Cost_point: faker.number.int({ min: 100, max: 2000 }), // Điểm thành viên cần để đổi
+                Discount_Percent: faker.number.int({ min: 10, max: 50 }),
+                Cost_point: faker.number.int({ min: 100, max: 2000 }),
                 Time_start: timeStart,
                 Time_expire: timeExpire
             });
