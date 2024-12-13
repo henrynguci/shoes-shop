@@ -1,142 +1,148 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 import Header from "../components/Header";
+import axios from "axios";
 
 export default function New_product() {
   const [formData, setFormData] = useState({
-    imageUrls: [],
-    name: "",
-    description: "",
-    address: "",
-    type: "rent",
-    bedrooms: 1,
-    bathrooms: 1,
-    regularPrice: 50,
-    discountPrice: 0,
-    offer: false,
-    parking: false,
-    furnished: false,
+    Name: "",
+    Description: "",
+    Brand_ID: "",
+    Gift_ID: "",
+    Img_url: "",
+    Color: "",
+    Size: "",
+    Price: 0,
   });
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-      setFormData({
-        ...formData,
-        [e.target.id]: e.target.value,
-    })
-    
+    setFormData({
+      ...formData,
+      [e.target.id]: e.target.value,
+    });
   };
 
-  const handleSubmit = () => {
-    console.log("success");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/products", {
+        Product: {
+          Name: formData.Name,
+          Description: formData.Description,
+          Brand_ID: formData.Brand_ID,
+          Gift_ID: formData.Gift_ID || null,
+          Img_url: formData.Img_url,
+        },
+        Version: {
+          Color: formData.Color,
+          Size: formData.Size,
+          Price: parseFloat(formData.Price),
+        },
+      });
+      alert(response.data.message || "Product created successfully!");
+      setFormData({
+        Name: "",
+        Description: "",
+        Brand_ID: "",
+        Gift_ID: "",
+        Img_url: "",
+        Color: "",
+        Size: "",
+        Price: 0,
+      });
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to create product");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <Box m="20px">
       <Header title="THÊM SẢN PHẨM" subtitle="Tạo mới ngay" />
       <main className="p-3 max-w-4xl mx-auto">
-        <form
-          onSubmit={handleSubmit}
-          className="flex sm:flex-row gap-4"
-        >
+        <form onSubmit={handleSubmit} className="flex sm:flex-row gap-4">
           <div className="flex flex-col gap-4 flex-1">
             <input
               type="text"
               placeholder="Name"
               className="border p-3 rounded-lg"
-              id="name"
-              maxLength="62"
-              minLength="10"
+              id="Name"
               required
               onChange={handleChange}
-              value={formData.name}
+              value={formData.Name}
             />
             <textarea
-              type="text"
               placeholder="Description"
               className="border p-3 rounded-lg"
-              id="description"
+              id="Description"
               required
               onChange={handleChange}
-              value={formData.description}
+              value={formData.Description}
             />
             <input
               type="text"
-              placeholder="Address"
+              placeholder="Brand ID"
               className="border p-3 rounded-lg"
-              id="address"
+              id="Brand_ID"
               required
               onChange={handleChange}
-              value={formData.address}
+              value={formData.Brand_ID}
             />
-            <div className="flex flex-wrap gap-6">
-              <div className="flex items-center gap-2">
-                <p>Size: </p>
-                <input
-                  type="number"
-                  id="bedrooms"
-                  min="1"
-                  max="10"
-                  required
-                  className="p-3 border border-gray-300 rounded-lg"
-                  onChange={handleChange}
-                  value={formData.bedrooms}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <p>Color: </p>
-                <input
-                  type="number"
-                  id="bathrooms"
-                  min="1"
-                  max="10"
-                  required
-                  className="p-3 border border-gray-300 rounded-lg"
-                  onChange={handleChange}
-                  value={formData.bathrooms}
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  id="regularPrice"
-                  min="50"
-                  max="10000000"
-                  required
-                  className="p-3 border border-gray-300 rounded-lg"
-                  onChange={handleChange}
-                  value={formData.regularPrice}
-                />
-                <div className="flex flex-col items-center">
-                  <p>Regular price</p>
-                    <span className="text-xs">($ / month)</span>
-                </div>
-              </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="number"
-                    id="discountPrice"
-                    min="0"
-                    max="10000000"
-                    required
-                    className="p-3 border border-gray-300 rounded-lg"
-                    onChange={handleChange}
-                    value={formData.discountPrice}
-                  />
-                  <div className="flex flex-col items-center">
-                    <p>Discounted price</p>
-                      <span className="text-xs">($ / month)</span>
-                  </div>
-                </div>
-            </div>
-            {/* BUTTON SUBMIT */}
+            <input
+              type="text"
+              placeholder="Gift ID (optional)"
+              className="border p-3 rounded-lg"
+              id="Gift_ID"
+              onChange={handleChange}
+              value={formData.Gift_ID}
+            />
+            <input
+              type="text"
+              placeholder="Image URL"
+              className="border p-3 rounded-lg"
+              id="Img_url"
+              required
+              onChange={handleChange}
+              value={formData.Img_url}
+            />
+            <input
+              type="text"
+              placeholder="Color"
+              className="border p-3 rounded-lg"
+              id="Color"
+              required
+              onChange={handleChange}
+              value={formData.Color}
+            />
+            <input
+              type="text"
+              placeholder="Size"
+              className="border p-3 rounded-lg"
+              id="Size"
+              required
+              onChange={handleChange}
+              value={formData.Size}
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              className="border p-3 rounded-lg"
+              id="Price"
+              required
+              onChange={handleChange}
+              value={formData.Price}
+            />
             <button
-              disabled={loading || uploading}
+              disabled={loading}
               className="p-3 bg-[#02c457] text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
             >
-              {loading ? "Updating..." : "TẠO MỚI"}
+              {loading ? "Đang tạo..." : "TẠO MỚI"}
             </button>
             {error && <p className="text-red-700 text-sm">{error}</p>}
           </div>
