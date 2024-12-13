@@ -2,11 +2,12 @@ import * as authService from '../services/auth.service.js';
 
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const account = await authService.getAccountByUsername(username);
+    const { Username, Password } = req.body;
+    console.log({ Username, Password });
+    const account = await authService.getAccountByUsername(Username);
     if (!account.Password) {
       res.status(404).json({ message: 'Username or password are incorrect!' });
-    } else if (authService.comparePassword(password, account.Password)) {
+    } else if (authService.comparePassword(Password, account.Password)) {
       res.status(200).json({
         message: 'Login successfully!',
         data: { Account_ID: account.Account_ID, role: account.Role },

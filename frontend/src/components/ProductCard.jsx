@@ -1,42 +1,26 @@
-import { getDiscountedPricePercentage } from "../utils/helper";
 import { Link } from "react-router-dom";
 import React from "react";
 
-const ProductCard = ({ data: { attributes: p, id } }) => {
+const ProductCard = ({ data }) => {
     return (
         <Link
-            to={`/product/${p.slug}`}
-            state={{ product: { id, attributes: p } }} 
+            to={`/product/${data.Product_ID}`}
+            state={{ data }} 
             className="transform overflow-hidden bg-white duration-200 hover:scale-105 cursor-pointer"
         >
             <img
                 width={500}
                 height={500}
-                src={p.thumbnail.data.attributes.url}
-                alt={p.name}
+                alt={data.name}
+                src={data.Img_url}
                 loading="lazy"
             />
             <div className="p-4 text-black/[0.9]">
-                <h2 className="text-lg font-medium">{p.name}</h2>
+                <h2 className="text-lg font-medium">{data.Name}</h2>
                 <div className="flex items-center text-black/[0.5]">
                     <p className="mr-2 text-lg font-semibold">
-                        &#8377;{p.price}
+                        &#8377;{data.Price}
                     </p>
-
-                    {p.original_price && (
-                        <>
-                            <p className="text-base  font-medium line-through">
-                                &#8377;{p.original_price}
-                            </p>
-                            <p className="ml-auto text-base font-medium text-green-500">
-                                {getDiscountedPricePercentage(
-                                    p.original_price,
-                                    p.price
-                                )}
-                                % off
-                            </p>
-                        </>
-                    )}
                 </div>
             </div>
         </Link>

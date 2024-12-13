@@ -16,7 +16,7 @@ export const addVersionToCart = async ({
   Size,
   Amount,
 }) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Customer_ID', sql.Int, Number(Account_ID))
     .input('Product_ID', sql.Int, Number(Product_ID))
@@ -33,7 +33,7 @@ export const removeVersionInCart = async ({
   Color,
   Size,
 }) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Customer_ID', sql.Int, Number(Account_ID))
     .input('Product_ID', sql.Int, Number(Product_ID))

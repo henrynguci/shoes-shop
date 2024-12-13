@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import img from '../public/c392ba101244345.5f1a2d7ad1371.jpg'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import authlogin from '../services/auth';
+import img from '../public/c392ba101244345.5f1a2d7ad1371.jpg';
 
 export default function Login() {
   const [formData, setFormData] = useState({});
@@ -11,9 +12,20 @@ export default function Login() {
       [e.target.id]: e.target.value,
     });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate("/");
+    const res = await authlogin.login(formData.email, formData.password);
+    if (res && res.data.message === "Login successfully!") {
+      console.log(res.data?.Account_ID);
+      localStorage.setItem('accountID', res.data.data.Account_ID);
+      if (res.data.role === "ADMIN") {
+        navigate("/admin");
+      }else {
+        navigate("/")
+      }
+    } else {
+      console.log(res.data.message);
+    }
   };
 
   return (
@@ -21,50 +33,70 @@ export default function Login() {
       {/* Left Side: Form */}
       <div className="w-1/2 bg-white flex flex-col justify-center p-10">
         <div className="flex flex-col flex-wrap content-center justify-center items-stretch">
-            <h1 className="font-bold mb-4 text-[xxx-large]">WELCOME BACK</h1>
-            <p className="text-gray-500 mb-6">Welcome back! Please enter your details.</p>
+          <h1 className="font-bold mb-4 text-[xxx-large]">WELCOME BACK</h1>
+          <p className="text-gray-500 mb-6">
+            Welcome back! Please enter your details.
+          </p>
 
-            <form className="space-y-4">
+          <form className="space-y-4">
             <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-                <input
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email
+              </label>
+              <input
                 id="email"
-                type="email"
+                required
                 placeholder="Enter your email"
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
-                />
+                onChange={handleChange}
+              />
             </div>
 
             <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                <input
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
                 id="password"
                 type="password"
+                required
                 placeholder="Enter your password"
                 className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500"
-                />
+                onChange={handleChange}
+              />
             </div>
 
             <div className="flex items-center justify-between">
-                <label className="inline-flex items-center">
+              <label className="inline-flex items-center">
                 <input type="checkbox" className="form-checkbox text-red-500" />
                 <span className="ml-2 text-gray-700 text-sm">Remember me</span>
-                </label>
-                <a href="/" className="text-sm text-red-500 hover:underline">Forgot password?</a>
+              </label>
+              <a href="/" className="text-sm text-red-500 hover:underline">
+                Forgot password?
+              </a>
             </div>
 
             <button
-                type="submit"
-                className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
-                onClick={handleSubmit}
+              type="submit"
+              className="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition"
+              onClick={handleSubmit}
             >
-                Sign in
+              Sign in
             </button>
-            </form>
+          </form>
 
-            <p className="mt-6 text-center text-gray-500">
-            Don't have an account? <a href="/" className="text-red-500 hover:underline">Sign up for free!</a>
-            </p>
+          <p className="mt-6 text-center text-gray-500">
+            Don&apos;t have an account?{' '}
+            <a href="/" className="text-red-500 hover:underline">
+              Sign up for free!
+            </a>
+          </p>
         </div>
       </div>
 
@@ -77,6 +109,5 @@ export default function Login() {
         />
       </div>
     </div>
-
   );
 }

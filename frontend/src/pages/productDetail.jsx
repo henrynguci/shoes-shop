@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoMdHeartEmpty } from "react-icons/io";
 import Wrapper from "../components/Wrapper";
 import ProductDetailsCarousel from "../components/ProductDetailsCarousel";
@@ -6,17 +6,18 @@ import { getDiscountedPricePercentage } from "../utils/helper";
 import ReactMarkdown from "react-markdown";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart } from "../store/cartSlice";
-import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { useParams } from 'react-router-dom';
+import getProduct from '../services/product';
 import "react-toastify/dist/ReactToastify.css";
 
 const ProductDetails = () => {
     const [selectedSize, setSelectedSize] = useState();
+    const [product, setProduct] = useState(null);
     const [showError, setShowError] = useState(false);
     const dispatch = useDispatch();
-    const location = useLocation();
-    const product = location.state?.product;
     const p = product?.attributes;
+    const { id } = useParams();
     const notify = () => {
         toast.success("Success. Check your cart!", {
             position: "bottom-right",
@@ -30,6 +31,15 @@ const ProductDetails = () => {
         });
     };
 
+    
+    useEffect(() => {
+        const fetchProduct = async () => {
+        const res = await getProduct.getDetail(id);
+            setProduct(res.data.data)
+        };
+        fetchProduct();
+    }, []);
+
     return (
         <div className="w-full md:py-20">
             <ToastContainer />
@@ -37,7 +47,7 @@ const ProductDetails = () => {
                 <div className="flex flex-col lg:flex-row md:px-10 gap-[50px] lg:gap-[100px]">
                     {/* left column start */}
                     <div className="w-full md:w-auto flex-[1.5] max-w-[500px] lg:max-w-full mx-auto lg:mx-0">
-                        <ProductDetailsCarousel images={p.image.data} />
+                        <ProductDetailsCarousel images={product.Img_url} />
                     </div>
                     {/* left column end */}
 
@@ -45,28 +55,28 @@ const ProductDetails = () => {
                     <div className="flex-[1] py-3">
                         {/* PRODUCT TITLE */}
                         <div className="text-[34px] font-semibold mb-2 leading-tight">
-                            {p.name}
+                            {product.Name}
                         </div>
 
                         {/* PRODUCT SUBTITLE */}
                         <div className="text-lg font-semibold mb-5">
-                            {p.subtitle}
+                            {product.subtitle}
                         </div>
 
                         {/* PRODUCT PRICE */}
                         <div className="flex items-center">
                             <p className="mr-2 text-lg font-semibold">
-                                MRP : &#8377;{p.price}
+                                MRP : &#8377;{product.price}
                             </p>
-                            {p.original_price && (
+                            {product.original_price && (
                                 <>
                                     <p className="text-base  font-medium line-through">
-                                        &#8377;{p.original_price}
+                                        &#8377;{product.original_price}
                                     </p>
                                     <p className="ml-auto text-base font-medium text-green-500">
                                         {getDiscountedPricePercentage(
-                                            p.original_price,
-                                            p.price
+                                            product.original_price,
+                                            product.price
                                         )}
                                         % off
                                     </p>

@@ -14,9 +14,7 @@ const ProductDetailsCarousel = ({ images }) => {
             >
                 {images?.map((img) => (
                     <img
-                        key={img.id}
-                        src={img.attributes.url}
-                        alt={img.attributes.name}
+                        src={img.Img_url.url}
                     />
                 ))}
             </Carousel>

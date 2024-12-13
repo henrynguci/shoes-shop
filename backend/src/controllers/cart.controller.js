@@ -1,8 +1,9 @@
 import * as cartService from '../services/cart.service.js';
 
 export const getCart = async (req, res) => {
+  
   try {
-    const cart = await cartService.getCart(req.body.Account_ID);
+    const cart = await cartService.getCart(accountID);
     res.status(200).json({
       message: 'Get cart',
       data: cart,
@@ -13,6 +14,7 @@ export const getCart = async (req, res) => {
 };
 
 export const addVersionToCart = async (req, res) => {
+  console.log(req.body);
   try {
     await cartService.addVersionToCart(req.body);
     res.status(200).json({ message: 'Add new version to cart successfully' });
