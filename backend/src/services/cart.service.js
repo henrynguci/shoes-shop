@@ -1,7 +1,8 @@
 import sql from 'mssql';
+import db from '../configs/db.js';
 
 export const getCart = async (Account_ID) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Account_ID', sql.Int, Number(Account_ID))
     .execute('getCart');

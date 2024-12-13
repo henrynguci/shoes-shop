@@ -1,4 +1,5 @@
 import sql from 'mssql';
+import db from '../configs/db.js';
 
 export const checkout = async (customer_ID, orderInfo, orderProducts) => {
   const table = new sql.Table('OrderProductTable');
@@ -23,7 +24,7 @@ export const checkout = async (customer_ID, orderInfo, orderProducts) => {
     );
   }
 
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Customer_ID', sql.Int, Number(customer_ID))
     .input('Shipfee', sql.Decimal(15, 2), Number(orderInfo.Shipfee))

@@ -1,13 +1,14 @@
 import sql from 'mssql';
+import db from '../configs/db.js';
 
 export const getAllProducts = async () => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request.execute('getAllProducts');
   return result.recordset;
 };
 
 export const getProductDetail = async (Product_ID) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Product_ID', sql.Int, Product_ID)
     .execute('getProductDetail');
@@ -18,7 +19,7 @@ export const insertProduct = async (
   { Name, Description, Brand_ID, Gift_ID, Img_url },
   { Color, Size, Price }
 ) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Name', sql.NVarChar(200), Name)
     .input('Description', sql.NVarChar(1000), Description)
@@ -36,7 +37,7 @@ export const updateProduct = async (
   Product_ID,
   { Name, Description, Brand_ID, Gift_ID }
 ) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Product_ID', sql.Int, Number(Product_ID))
     .input('Name', sql.VarChar(100), Name)
@@ -48,7 +49,7 @@ export const updateProduct = async (
 };
 
 export const deleteProduct = async (Product_ID) => {
-  const request = new sql.Request();
+  const request = new sql.Request(db);
   const result = await request
     .input('Product_ID', sql.Int, Number(Product_ID))
     .execute('deleteProduct');
