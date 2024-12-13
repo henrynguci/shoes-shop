@@ -25,8 +25,14 @@ app.use('/api', cartRoutes);
 app.use('/api', voucherRoutes);
 app.use('/api', orderRoutes);
 app.use('/api', brandRoutes);
+app.use('/api', authRoutes);
+app.use('/api', cartRoutes);
+app.use('/api', voucherRoutes);
+app.use('/api', orderRoutes);
+app.use('/api', brandRoutes);
 
 // Connect to database
+await connectDB();
 await connectDB();
 
 app.listen(PORT, () => {

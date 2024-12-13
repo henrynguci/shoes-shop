@@ -5,7 +5,6 @@ export const getCart = async (Account_ID) => {
   const result = await request
     .input('Account_ID', sql.Int, Number(Account_ID))
     .execute('getCart');
-  console.log(result);
   return result.recordset;
 };
 

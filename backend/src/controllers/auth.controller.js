@@ -4,9 +4,9 @@ export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const account = await authService.getAccountByUsername(username);
-    if (!account?.password) {
+    if (!account.Password) {
       res.status(404).json({ message: 'Username or password are incorrect!' });
-    } else if (authService.comparePassword(password, account.password)) {
+    } else if (authService.comparePassword(password, account.Password)) {
       res.status(200).json({
         message: 'Login successfully!',
         data: { Account_ID: account.Account_ID, role: account.Role },

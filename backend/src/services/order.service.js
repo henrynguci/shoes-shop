@@ -26,7 +26,7 @@ export const checkout = async (customer_ID, orderInfo, orderProducts) => {
   const request = new sql.Request();
   const result = await request
     .input('Customer_ID', sql.Int, Number(customer_ID))
-    .input('Shippfee', sql.Int, Number(orderInfo.Shipfee))
+    .input('Shipfee', sql.Decimal(15, 2), Number(orderInfo.Shipfee))
     .input(
       'Voucher_ID',
       sql.VarChar(50),
