@@ -1,13 +1,17 @@
 import express from 'express';
 import cors from 'cors';
-import { PORT } from './configs/env.js';
-import { connectDB } from './utils/database.js';
+import dotenv from 'dotenv';
+import { connectDB } from './configs/db.js';
 import productRoutes from './routes/product.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import cartRoutes from './routes/cart.routes.js';
 import voucherRoutes from './routes/voucher.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import brandRoutes from './routes/brand.routes.js';
+
+// Load biến môi trường từ .env
+dotenv.config();
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
